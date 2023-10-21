@@ -56,9 +56,16 @@ const Splitter = () => {
     >
       <Typography>{item.name}</Typography>
       <Box sx={{ display: "flex" }}>
-        <Typography sx={{ fontSize: "32px", mr: "5px" }}>$</Typography>
+        <Typography
+          sx={{
+            fontSize: "32px",
+            mr: "5px",
+            color: index === 1 ? "transparent" : "black",
+          }}
+        >
+          $
+        </Typography>
         <TextField
-          label={index === 1 ? "Whole Number Percentage" : ""}
           onChange={(e) => {
             setShowPeople(false);
             let val;
@@ -76,6 +83,15 @@ const Splitter = () => {
             }
           }}
         />
+        <Typography
+          sx={{
+            fontSize: "32px",
+            ml: "5px",
+            color: index === 1 ? "black" : "transparent",
+          }}
+        >
+          %
+        </Typography>
       </Box>
     </Box>
   ));
