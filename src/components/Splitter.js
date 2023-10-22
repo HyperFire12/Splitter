@@ -62,7 +62,7 @@ const Splitter = () => {
           sx={{
             fontSize: "32px",
             mr: "5px",
-            color: index === 1 ? "transparent" : "black",
+            color: index === 0 || index === 1 ? "transparent" : "black",
           }}
         >
           $
