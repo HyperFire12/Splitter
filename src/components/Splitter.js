@@ -12,6 +12,8 @@ const Splitter = () => {
   const [coupon, setCoupon] = useState(0);
   const [listOfPeople, setListOfPeople] = useState([]);
   const [showPeople, setShowPeople] = useState(false);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [numOfItems, setNumOfItems] = useState(0);
 
   const textfields = [
     {
@@ -97,9 +99,13 @@ const Splitter = () => {
   ));
 
   const people = () => {
-    const handlePersonChange = (index, field, value) => {
+    const handlePersonChange = (index, field, value, field2, value2) => {
       const updatedPeople = [...listOfPeople];
-      updatedPeople[index] = { ...updatedPeople[index], [field]: value };
+      updatedPeople[index] = {
+        ...updatedPeople[index],
+        [field]: value,
+        [field2]: value2,
+      };
       setListOfPeople(updatedPeople);
     };
     const rows = [];
@@ -130,13 +136,15 @@ const Splitter = () => {
                   setShowPeople(false);
                   let val = e.target.value.split(",");
                   let x = 0;
+                  let items = 0;
                   for (let i = 0; i < val.length; i++) {
                     let vals = parseFloat(val[i]);
                     if (!isNaN(vals)) {
                       x += parseFloat(val[i]);
+                      items++;
                     }
                   }
-                  handlePersonChange(i, "subtotal", x);
+                  handlePersonChange(i, "subtotal", x, "items", items);
                 }}
               />
             </Box>
@@ -170,13 +178,15 @@ const Splitter = () => {
                   setShowPeople(false);
                   let val = e.target.value.split(",");
                   let x = 0;
+                  let items = 0;
                   for (let i = 0; i < val.length; i++) {
                     let vals = parseFloat(val[i]);
                     if (!isNaN(vals)) {
                       x += parseFloat(val[i]);
+                      items++;
                     }
                   }
-                  handlePersonChange(i, "subtotal", x);
+                  handlePersonChange(i, "subtotal", x, "items", items);
                 }}
               />
             </Box>
@@ -192,7 +202,13 @@ const Splitter = () => {
     const handleTotalChange = (index, field, value) => {
       updatedPeople[index] = { ...updatedPeople[index], [field]: value };
     };
+    let amt = 0;
+    let items = 0;
     for (let i = 0; i < listOfPeople.length; i++) {
+      amt +=
+        (deliveryFee + serviceFee + gstAndHst + tips - coupon) / numofPpl +
+        listOfPeople[i].subtotal * (1 - discountPercentage / 100);
+      items += listOfPeople[i].items;
       handleTotalChange(
         i,
         "total",
@@ -202,6 +218,8 @@ const Splitter = () => {
         ).toFixed(2)
       );
     }
+    setTotalAmount(amt.toFixed(2));
+    setNumOfItems(items);
     setListOfPeople(updatedPeople);
     setShowPeople(true);
   };
@@ -247,8 +265,15 @@ const Splitter = () => {
           Submit
         </Button>
       </Box>
-
-      {showPeople ? <Box>{result()}</Box> : <Box></Box>}
+      {showPeople ? (
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+          {result()}
+          <Typography>Number of Items: {numOfItems}</Typography>
+          <Typography>Total Amount: ${totalAmount}</Typography>
+        </Box>
+      ) : (
+        <Box></Box>
+      )}
     </Box>
   );
 };
