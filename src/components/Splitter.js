@@ -4,7 +4,7 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 
 const Splitter = () => {
   const [numofPpl, setNumofPpl] = useState(1);
-  const [discountPercentage, setDiscountPercentage] = useState(1);
+  const [discountPercentage, setDiscountPercentage] = useState(0);
   const [deliveryFee, setDeliveryFee] = useState(0);
   const [serviceFee, setServiceFee] = useState(0);
   const [gstAndHst, setGstAndHst] = useState(0);
