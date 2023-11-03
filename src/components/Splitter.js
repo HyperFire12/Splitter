@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
 
 const Splitter = () => {
-  const [numofPpl, setNumofPpl] = useState(1);
+  const [numOfPpl, setnumOfPpl] = useState(1);
   const [discountPercentage, setDiscountPercentage] = useState(0);
   const [deliveryFee, setDeliveryFee] = useState(0);
   const [serviceFee, setServiceFee] = useState(0);
@@ -17,7 +17,7 @@ const Splitter = () => {
   const textfields = [
     {
       name: "Number of People",
-      setValue: setNumofPpl,
+      setValue: setnumOfPpl,
     },
     {
       name: "Discount Percentage",
@@ -104,8 +104,8 @@ const Splitter = () => {
       setListOfPeople(updatedPeople);
     };
     const rows = [];
-    if (numofPpl < 11) {
-      for (let i = 0; i < numofPpl; i++) {
+    if (numOfPpl < 11) {
+      for (let i = 0; i < numOfPpl; i++) {
         rows.push(
           <Box
             key={i}
@@ -139,7 +139,6 @@ const Splitter = () => {
                       items++;
                     }
                   }
-                  x *= 1.13;
                   handlePersonChange(i, "subtotal", x, "items", items);
                 }}
               />
@@ -182,7 +181,6 @@ const Splitter = () => {
                       items++;
                     }
                   }
-                  x *= 1.13;
                   handlePersonChange(i, "subtotal", x, "items", items);
                 }}
               />
@@ -202,16 +200,23 @@ const Splitter = () => {
     let amt = 0;
     let items = 0;
     for (let i = 0; i < listOfPeople.length; i++) {
+      if (listOfPeople[i].items == null) {
+        continue;
+      }
       amt +=
-        (deliveryFee + serviceFee + tips - coupon) / numofPpl +
-        listOfPeople[i].subtotal * (1 - discountPercentage / 100);
+        (listOfPeople[i].subtotal * (1 - discountPercentage / 100) +
+          (deliveryFee + serviceFee - coupon) / numOfPpl) *
+          1.13 +
+        tips / numOfPpl;
       items += listOfPeople[i].items;
       handleTotalChange(
         i,
         "total",
         (
-          (deliveryFee + serviceFee + tips - coupon) / numofPpl +
-          listOfPeople[i].subtotal * (1 - discountPercentage / 100)
+          (listOfPeople[i].subtotal * (1 - discountPercentage / 100) +
+            (deliveryFee + serviceFee - coupon) / numOfPpl) *
+            1.13 +
+          tips / numOfPpl
         ).toFixed(2)
       );
     }
@@ -224,6 +229,9 @@ const Splitter = () => {
   const result = () => {
     const rows = [];
     for (let i = 0; i < listOfPeople.length; i++) {
+      if (listOfPeople[i].total == null) {
+        continue;
+      }
       rows.push(
         <Box
           key={i}
