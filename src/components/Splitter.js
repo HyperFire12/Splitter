@@ -14,6 +14,12 @@ const Splitter = () => {
   const [totalAmount, setTotalAmount] = useState(0);
   const [numOfItems, setNumOfItems] = useState(0);
 
+  const reset = () => {
+    setListOfPeople([]);
+    setTotalAmount(0);
+    setNumOfItems(0);
+  };
+
   const textfields = [
     {
       name: "Number of People",
@@ -72,7 +78,9 @@ const Splitter = () => {
               val = parseFloat(e.target.value);
             }
             if ((val <= 0 || isNaN(val)) && index === 0) {
+              item.setValue(0);
               item.setValue(1);
+              reset();
             } else {
               if (!isNaN(val)) {
                 item.setValue(val);
