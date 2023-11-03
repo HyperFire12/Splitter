@@ -7,7 +7,6 @@ const Splitter = () => {
   const [discountPercentage, setDiscountPercentage] = useState(0);
   const [deliveryFee, setDeliveryFee] = useState(0);
   const [serviceFee, setServiceFee] = useState(0);
-  const [gstAndHst, setGstAndHst] = useState(0);
   const [tips, setTips] = useState(0);
   const [coupon, setCoupon] = useState(0);
   const [listOfPeople, setListOfPeople] = useState([]);
@@ -31,10 +30,6 @@ const Splitter = () => {
     {
       name: "Service Fee",
       setValue: setServiceFee,
-    },
-    {
-      name: "GST/HST",
-      setValue: setGstAndHst,
     },
     {
       name: "Tips",
@@ -144,6 +139,7 @@ const Splitter = () => {
                       items++;
                     }
                   }
+                  x *= 1.13;
                   handlePersonChange(i, "subtotal", x, "items", items);
                 }}
               />
@@ -186,6 +182,7 @@ const Splitter = () => {
                       items++;
                     }
                   }
+                  x *= 1.13;
                   handlePersonChange(i, "subtotal", x, "items", items);
                 }}
               />
@@ -206,14 +203,14 @@ const Splitter = () => {
     let items = 0;
     for (let i = 0; i < listOfPeople.length; i++) {
       amt +=
-        (deliveryFee + serviceFee + gstAndHst + tips - coupon) / numofPpl +
+        (deliveryFee + serviceFee + tips - coupon) / numofPpl +
         listOfPeople[i].subtotal * (1 - discountPercentage / 100);
       items += listOfPeople[i].items;
       handleTotalChange(
         i,
         "total",
         (
-          (deliveryFee + serviceFee + gstAndHst + tips - coupon) / numofPpl +
+          (deliveryFee + serviceFee + tips - coupon) / numofPpl +
           listOfPeople[i].subtotal * (1 - discountPercentage / 100)
         ).toFixed(2)
       );
